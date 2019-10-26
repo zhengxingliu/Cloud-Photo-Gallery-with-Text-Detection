@@ -77,6 +77,8 @@ def login_submit():
         session.permanent = True
         session['username'] = username
         session['user_id'] = user_id
+        if 'error' in session:
+            session.pop('error')
         return redirect(url_for('thumbnails',id=user_id))
 
     session['error'] = "Error! Incorrect username or password!"
@@ -149,6 +151,8 @@ def new_user_submit():
         session['error'] = str(error)
         return redirect(url_for('new_user'))
 
+    if 'error' in session:
+        session.pop('error')
     return render_template("user/login.html",title="Main Page",username=username)
 
 

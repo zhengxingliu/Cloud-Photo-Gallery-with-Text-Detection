@@ -12,8 +12,8 @@
     <br>
 
     <table>
-        {% for row in cursor %}
-         <a href="{{url_for('image_view',id=row[1],photo_id=row[0])}}"><img src = '{{row[2]}}' /> </a>
+        {% for row in image_list %}
+        <a href="{{url_for('image_view',id=row[1],photo_id=row[0])}}"><img src = '{{row[3]}}' /> </a>
         {% endfor %}
     </table>
 
