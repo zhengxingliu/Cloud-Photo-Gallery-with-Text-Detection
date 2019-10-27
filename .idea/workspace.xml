@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b08dd5f8-ed54-4212-b019-ad419dc8eaa2" name="Default Changelist" comment="message">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/photo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/photo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/photo/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/photo/upload.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/text_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/text_detection.py" afterDir="false" />
-    </list>
+    <list default="true" id="b08dd5f8-ed54-4212-b019-ad419dc8eaa2" name="Default Changelist" comment="message" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
