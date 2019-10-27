@@ -7,3 +7,6 @@ db_config = {'user': 'admin',
              'password': 'ece1779pass',
              'host': 'ece1779a2-db.cguvohxj73qh.us-east-1.rds.amazonaws.com',
              'database': 'ece1779_a2'}
+
+
+s3_config = {"bucket": "1779a2"}

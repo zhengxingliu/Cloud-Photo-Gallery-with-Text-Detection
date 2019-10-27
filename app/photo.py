@@ -1,7 +1,7 @@
 from flask import render_template, request, session, url_for, redirect, g, jsonify
 from app import webapp
 
-from app.config import db_config
+from app.config import db_config, s3_config
 from wand.image import Image
 
 import mysql.connector
@@ -12,8 +12,8 @@ from app.text_detection import text_detection
 
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-bucket_name = "1779a2test"
-
+#bucket_name = "1779a2test"
+bucket_name = s3_config["bucket"]
 
 def connect_to_database():
     return mysql.connector.connect(user=db_config['user'],
@@ -94,15 +94,16 @@ def allowed_file(filename):
 @webapp.route('/<id>/image_save',methods=['POST'])
 # handles photo uploads and text detection
 def image_save(id):
+
     if 'authenticated' not in session:
         return redirect(url_for('image_upload',id=id))
 
     #check if missing upload file
-    if 'uploadedfile' not in request.files:
+    if 'file' not in request.files:
         session['error'] = "Missing uploaded file"
         return redirect(url_for('image_upload',id=id))
 
-    new_file = request.files['uploadedfile']
+    new_file = request.files['file']
     if new_file.filename == '':
         session['error'] = 'Missing file name'
         return redirect(url_for('image_upload',id=id))
@@ -116,6 +117,9 @@ def image_save(id):
     file_name, file_type = (new_file.filename).rsplit('.',1)
     fname = str(id) + "_" + file_name + "." + file_type
 
+
+
+
     # check if file existed with duplicated name
     cnx = get_db()
     cursor = cnx.cursor()
@@ -128,7 +132,7 @@ def image_save(id):
         duplicate = True
         while duplicate == True:
             file_name = file_name.rsplit('__',1)[0] + '__' + str(num)
-            fname = file_name + "." + file_type
+            fname = str(id) + "_" + file_name + "." + file_type
             query = ''' SELECT * FROM transformation WHERE filename = %s'''
             cursor.execute(query, (fname,))
             num +=1
@@ -210,8 +214,6 @@ def image_view(id,photo_id):
         url = s3.generate_presigned_url('get_object', Params={'Bucket': bucket_name, 'Key': key[0]}, ExpiresIn=86400)
         images.append(url)
 
-
-    print("view image")
     return render_template("photo/view.html",image_list=images,id=session['user_id'],photo_id=photo_id)
 
 
@@ -219,8 +221,6 @@ def image_view(id,photo_id):
 @webapp.route('/<id>/image<photo_id>/delete',methods=['POST'])
 # delete image from local directory and database
 def image_delete(id,photo_id):
-
-    print("deleting photo")
 
     cnx = get_db()
     cursor = cnx.cursor()
@@ -244,11 +244,6 @@ def image_delete(id,photo_id):
     cnx.commit()
 
     return redirect(url_for('thumbnails', id=id))
-
-
-
-
-# -------------------------------------------------------------------------------
 
 
 @webapp.route ('/api/upload', methods=['POST'])
@@ -280,7 +275,6 @@ def api_upload():
     m = hashlib.md5()
     m.update(salted_password.encode('utf-8'))
     new_hash = m.digest()
-
     if new_hash != hash:
         message = {"status": 401,
                    "message": "Unauthorized: invalid username or password"}
@@ -296,84 +290,24 @@ def api_upload():
     new_file = request.files['file']
     if new_file.filename == '':
         message = {"status": 400,
-                   "message": "Bad Request: missing file"}
-        response = jsonify(message)
-        response.status_code = 400
-        return response
-
-
-    if allowed_file(new_file.filename) == False :
-        message = {"status": 400,
                    "message": "Bad Request: invalid file"}
         response = jsonify(message)
         response.status_code = 400
         return response
 
+    # upload file
+    if allowed_file(new_file.filename) == True :
+        try:
+            image_save(user_id)
 
-    #upload file
-    cnx = get_db()
-    cursor = cnx.cursor()
+        except:
+            message = {"status": 400,
+                       "message": "Bad Request: upload failed"}
+            response = jsonify(message)
+            response.status_code = 400
+            return response
 
-    file_name = ((new_file.filename).rsplit('.',1))[0]
-    file_type = ((new_file.filename).rsplit('.', 1))[1]
-    fname = os.path.join('app/static/user_images', new_file.filename)
-
-    # check if file existed with duplicated name
-    query = ''' SELECT * FROM transformation WHERE filename = %s'''
-    cursor.execute(query, (fname[3:],))
-    row = cursor.fetchall()
-    if row != []:
-        # create new file name with number suffix if file existed
-        num = 2
-        duplicate = True
-        while duplicate == True:
-            file_name = file_name.rsplit('__',1)[0] + '__' + str(num)
-            fname = os.path.join('app/static/user_images', file_name + "." + file_type)
-            query = ''' SELECT * FROM transformation WHERE filename = %s'''
-            cursor.execute(query, (fname[3:],))
-            num +=1
-            if cursor.fetchall() == []:
-                duplicate = False
-
-    # save original image into local directory
-    fname = os.path.join('app/static/user_images', file_name + "." + file_type)
-    print(fname)
-    new_file.save(fname)
-
-    # store path into database
-    query = "INSERT INTO photo (user_id) VALUES (%s)"
-    cursor.execute(query, (session['user_id'],))
-    query = "SELECT LAST_INSERT_ID()"
-    cursor.execute(query)
-    row = cursor.fetchone()
-    photo_id = row[0]
-    query = "INSERT INTO transformation (filename,type_id,photo_id) VALUES (%s,%s,%s)"
-    cursor.execute(query, (fname[3:], 1, photo_id))
-
-    # create thumbnail
-    img = Image(filename=fname)
-    i = img.clone()
-    i.resize(80, 100)
-    fname_thumbnail = os.path.join('app/static/user_images', file_name + '_thumbnail.' + file_type)
-    i.save(filename=fname_thumbnail)
-
-    # store thumbnail path to database
-    query = "INSERT INTO transformation (filename,type_id,photo_id) VALUES (%s,%s,%s)"
-    cursor.execute(query, (fname_thumbnail[3:], 2, photo_id))
-
-    # create text detection
-    fname_textDetection = os.path.join('app/static/user_images', file_name + '_textDetection.' + file_type)
-    text_detection(fname, fname_textDetection)
-
-    # store textDetection path to database
-    query = "INSERT INTO transformation (filename,type_id,photo_id) VALUES (%s,%s,%s)"
-    cursor.execute(query, (fname_textDetection[3:], 3, photo_id))
-
-    cursor.close()
-    cnx.commit()
-
-
-    message = {"status":200,
+    message = {"status": 200,
                "message": "OK"}
     response = jsonify(message)
     response.status_code = 200

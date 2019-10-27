@@ -31,7 +31,7 @@ def text_detection(input_image,save_path):
         "feature_fusion/concat_3"]
 
     # load the pre-trained EAST text detector
-    print("[INFO] loading EAST text detector...")
+    #print("[INFO] loading EAST text detector...")
     #net = cv2.dnn.readNet(args["east"])
     net = cv2.dnn.readNet('frozen_east_text_detection.pb')
 
@@ -39,13 +39,13 @@ def text_detection(input_image,save_path):
     # the model to obtain the two output layer sets
     blob = cv2.dnn.blobFromImage(image, 1.0, (W, H),
                                  (123.68, 116.78, 103.94), swapRB=True, crop=False)
-    start = time.time()
+    #start = time.time()
     net.setInput(blob)
     (scores, geometry) = net.forward(layerNames)
-    end = time.time()
+    #end = time.time()
 
     # show timing information on text prediction
-    print("[INFO] text detection took {:.6f} seconds".format(end - start))
+    #print("[INFO] text detection took {:.6f} seconds".format(end - start))
 
     # grab the number of rows and columns from the scores volume, then
     # initialize our set of bounding box rectangles and corresponding
