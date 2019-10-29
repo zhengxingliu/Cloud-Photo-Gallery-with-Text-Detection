@@ -5,14 +5,13 @@ from app.config import db_config, s3_config
 from wand.image import Image
 
 import mysql.connector
-import os, hashlib, tempfile
+import os, hashlib
 import boto3
 
 from app.text_detection import text_detection
 
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-#bucket_name = "1779a2test"
 bucket_name = s3_config["bucket"]
 
 def connect_to_database():

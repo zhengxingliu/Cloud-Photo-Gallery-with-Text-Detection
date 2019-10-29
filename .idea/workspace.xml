@@ -1,7 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b08dd5f8-ed54-4212-b019-ad419dc8eaa2" name="Default Changelist" comment="message" />
+    <list default="true" id="b08dd5f8-ed54-4212-b019-ad419dc8eaa2" name="Default Changelist" comment="message">
+      <change afterPath="$PROJECT_DIR$/manager_app/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/.travis.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/API.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/CONTRIBUTING.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/FAQ.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/NEWS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/PLUGINS.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/component.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-eu-gdp-growth-1.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-eu-gdp-growth-2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-eu-gdp-growth-3.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-eu-gdp-growth-4.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-eu-gdp-growth-5.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-eu-gdp-growth.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-japan-gdp-growth.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/data-usa-gdp-growth.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/ajax/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/annotating/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-interacting/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-multiple/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/date.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/africa" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/antarctica" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/asia" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/australasia" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/backward" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/etcetera" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/europe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/factory" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/iso3166.tab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/leapseconds" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/northamerica" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/pacificnew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/solar87" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/solar88" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/solar89" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/southamerica" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/systemv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/yearistype.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time-zones/tz/zone.tab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/axes-time/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/background.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/basic-options/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/basic-usage/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/canvas/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/categories/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/examples.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/image/hs-2004-27-a-large-web.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/image/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/interacting/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/navigate/arrow-down.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/navigate/arrow-left.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/navigate/arrow-right.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/navigate/arrow-up.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/navigate/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/percentiles/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/realtime/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/resize/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/selection/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/series-errorbars/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/series-pie/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/series-toggle/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/series-types/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/shared/jquery-ui/jquery-ui.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/stacking/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/symbols/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/threshold/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/tracking/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/visitors/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/examples/zooming/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/excanvas.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/excanvas.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/flot.jquery.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.colorhelpers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.canvas.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.categories.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.crosshair.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.errorbars.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.fillbetween.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.image.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.navigate.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.pie.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.resize.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.selection.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.stack.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.symbol.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.threshold.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.flot.time.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/static/flot/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/templates/base.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/templates/list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/templates/view_instance.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/start_manager.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/photo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/photo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start.sh" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,8 +119,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -24,6 +132,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -44,7 +153,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.run">
+  <component name="RunManager" selected="Python.run_manager">
     <configuration name="photo" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ece1779_a1" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -78,7 +187,28 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_user.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run_manager" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="ece1779_a1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run_manager.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -131,6 +261,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.run_manager" />
         <item itemvalue="Python.photo" />
         <item itemvalue="Python.user" />
         <item itemvalue="Python.test" />

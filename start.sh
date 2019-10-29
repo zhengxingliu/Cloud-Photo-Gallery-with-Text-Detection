@@ -1,3 +1,2 @@
-#! /bin/bash
-flask run --host 0.0.0.0
-
+#!/bin/bash
+gunicorn --bind 0.0.0.0:5000 --workers=1 --access-logfile access.log --error-logfile error.log app:webapp
