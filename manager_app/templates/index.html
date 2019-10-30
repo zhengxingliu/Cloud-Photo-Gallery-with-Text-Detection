@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+   <h2>Current workers: {{size}}</h2>
+
+   <div class="row">
+        <div class = "col-xs-10 col-md-2">
+            <form action="{{url_for('ec2_create')}}" method='post'>
+                <input class="btn btn-outline-primary" type='submit' value='Grow Worker Pool' />
+            </form>
+        </div>
+
+        <div class = "col-xs-10 col-md-2">
+            <form action="{{url_for('ec2_destroy')}}" method='post'>
+                <input class="btn btn-outline-primary" type='submit' value='Shrink Worker Pool' />
+            </form>
+        </div>
+
+
+         <div class = "col-sm-8">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes >
+            {% for message in messages %}
+                <li "><p class="text-danger">{{ message }}</p></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+         </div>
+   </div>
+
+    <br>
+    <table class="table">
+    <thead class="thead-light">
+       <th>ID</th>
+       <th>Type</th>
+       <th>Availability Zone</th>
+       <th>Status</th>
+       <th> </th>
+    </>
+    {% for instance in instances %}
+        <tr>
+            <td>{{ instance.id }}</td>
+            <td>{{ instance.instance_type }}</td>
+            <td>{{ instance.placement['AvailabilityZone']}}</td>
+            <td>{{ instance.state['Name'] }}</td>
+
+        <td>
+                <form action="{{url_for('view_instance',id=instance.id)}}" method='get'>
+                    <input class="btn btn-outline-primary" type='submit' value='Details' />
+                </form>
+            </td>
+
+
+
+
+
+
+        </tr>
+    {% endfor %}
+    </table>
+{% endblock %}
