@@ -34,10 +34,10 @@ deactivate () {
     fi
 }
 
-# unset irrelavent variables
+# unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/ubuntu/Desktop/ece1779/databases/venv"
+VIRTUAL_ENV="/Users/karenliu/PycharmProjects/ece1779_a1/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
