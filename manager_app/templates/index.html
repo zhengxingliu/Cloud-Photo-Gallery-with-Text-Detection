@@ -3,7 +3,8 @@
 
 
    <h2>Current workers: {{size}}</h2>
-
+    <p>Load Balancer DNS: http://a2loadbalancer-1794919167.us-east-1.elb.amazonaws.com</p>
+    <br>
    <div class="row">
 
        <div class = "col-xs-10 col-md-3">
@@ -72,13 +73,18 @@
 
 
             <form action="{{url_for('delete_data')}}" method='post'>
-                <input class="btn btn-outline-primary" type='submit' value='Delete All Data' />
+                <input class="btn btn-outline-primary" type='submit' value='Delete All Data'
+                       onclick="return confirm('Are you sure you want to delete all data?')"/>
             </form>
             <br>
              <form action="{{url_for('terminate_all')}}" method='post'>
-                <input class="btn btn-outline-primary" type='submit' value='Terminate All Instances' />
+                <input class="btn btn-outline-primary" type='submit' value='Terminate All Instances'
+                       onclick="return confirm('Are you sure you want to terminate all instances?')"/>
             </form>
             <br>
 
+    <p><small class="text-muted">If no worker is running, grow worker pool by 1 to start autoscaling.
+        Allow some time for new instance to launch and pass load balancer's health test.
+        CPU data will start updating after instance is deployed for more than 1 minute.</small> </p>
 
 {% endblock %}

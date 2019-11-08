@@ -6,9 +6,15 @@ import boto3,random, mysql.connector, statistics, math
 from datetime import datetime, timedelta
 from operator import itemgetter
 from manager_app.ec2 import get_cpu_status
+from apscheduler.schedulers.background import BackgroundScheduler
+import time, atexit
+
 
 
 autoscale_config = {"grow_thres": 70, 'shrink_thres': 30, "expand_ratio": 2, "shrink_ratio": 2}
+
+# list of new pending instances that need to be added to load balancer
+instance_starting = []
 
 def connect_to_database():
     return mysql.connector.connect(user=db_config['user'],
@@ -59,27 +65,35 @@ def update_config():
     # validate new config values from form
     error = ""
     grow_thres=request.form.get('grow_thres', "")
-    if grow_thres != "" :
+    shrink_thres = request.form.get('shrink_thres', "")
+    expand_ratio = request.form.get('expand_ratio', "")
+    shrink_ratio = request.form.get('shrink_ratio', "")
+
+    if grow_thres != "" and shrink_thres != "":
+        if float(grow_thres) > 0 and float(grow_thres) > float(shrink_thres):
+            autoscale_config['grow_thres'] = float(grow_thres)
+            autoscale_config['shrink_thres'] = float(shrink_thres)
+        else:
+            error = "invalid input for threshold"
+
+    elif grow_thres != "" and shrink_thres == "":
         if float(grow_thres) > 0 and float(grow_thres) > autoscale_config["shrink_thres"]:
             autoscale_config['grow_thres'] = float(grow_thres)
         else:
             error = "invalid input for grow threshold"
 
-    shrink_thres = request.form.get('shrink_thres', "")
-    if shrink_thres != "":
+    elif shrink_thres != "" and grow_thres == "":
         if float(shrink_thres) > 0 and float(shrink_thres) < autoscale_config["grow_thres"]:
             autoscale_config['shrink_thres'] = float(shrink_thres)
         else:
             error = "invalid input for shrink threshold"
 
-    expand_ratio = request.form.get('expand_ratio', "")
     if expand_ratio != "":
         if float(expand_ratio) > 1:
             autoscale_config['expand_ratio'] = float(expand_ratio)
         else:
             error = "invalid input for expand ratio"
 
-    shrink_ratio = request.form.get('shrink_ratio', "")
     if shrink_ratio != "" :
         if float(shrink_ratio) > 1:
             autoscale_config['shrink_ratio'] = float(shrink_ratio)
@@ -119,55 +133,64 @@ def get_cpu_average():
     if len(list(instances)) > 0:
         for instance in instances:
             cpu_status = get_cpu_status(instance.id)
-        # read cpu status of each instance for past 2 minutes
-        if len(cpu_status) > 0:
-            cpu_list.append(cpu_status[-1][1])
-        if len(cpu_status) >= 2:
-            cpu_list.append(cpu_status[-2][1])
-        if len(cpu_list) == 0:
-            print('cpu average: no data')
-            return 0
-        else:
+            # read cpu status of each instance for past 2 minutes
+
+            if len(cpu_status) >= 1:
+                cpu_list.append(cpu_status[-1][1])
+            if len(cpu_status) >= 2:
+                cpu_list.append(cpu_status[-2][1])
+        if len(cpu_list) > 0:
             average = statistics.mean(cpu_list)
             average = round(average, 2)
-            print('cpu average utilization is ', average)
+            print('cpu average:', average)
             return float(average)
+        else:
+            return 0
+
     else:
+        print('cpu average: no data')
         return 0
-        print('cpu average: no instance')
 
-
+# auto scale worker pool based on cpu utilization
 def autoscale():
     print("autoscale:")
     average = get_cpu_average()
-    if average != None:
-        print("CPU average: ", average)
+    if average > 0:
         ec2 = boto3.resource('ec2')
         instances = ec2.instances.filter(
             Filters=[{'Name': 'tag-value', 'Values': ['ece1779_a2_user']},
-                     {'Name': 'instance-state-name', 'Values': ['running']}])
+                     {'Name': 'instance-state-name', 'Values': ['running','pending']}])
         size = len(list(instances))
 
+        print(list(instances))
         if size == 0:
+            #create_instances(1)
             return False
 
         # expand worker pool when cpu average is higher than expand thres
-        elif average > float(autoscale_config["grow_thres"]):
+        if average > float(autoscale_config["grow_thres"]):
             num = int(size * autoscale_config["expand_ratio"]) - size
+            # maximum worker pool size = 10
+            if size >= 10:
+                return False
+            if (num+size) >= 10:
+                num = 10 - size
             create_instances(num)
-            print('average above threshold, creating ' + str(int(size * autoscale_config["expand_ratio"])) + ' workers, ' + str(size+num) + " workers available")
+            print('average above threshold, creating ' + str(num) + ' workers, ' + str(size+num) + " workers available")
             return True
 
         # shrink worker pool when cpu average is lower than shrink thres
         elif average < float(autoscale_config["shrink_thres"]):
             num = size - int(size / autoscale_config["shrink_ratio"])
-            # at least keep one instance left
+            #  minimum worker pool size = 1
             if (size-num) <= 1:
                 num = size-1
             destroy_instances(num)
-            print('average below threshold, destroying ' + str(int(size * autoscale_config["shrink_ratio"])) + ' workers, '+ str(size-num) + " workers available")
+            print('average below threshold, destroying ' + str(num) + ' workers, '+ str(size-num) + " workers available")
             return True
     return False
+
+
 
 def create_instances(num_create):
     ec2 = boto3.resource('ec2')
@@ -184,10 +207,31 @@ def create_instances(num_create):
         id_list.append(ins.id)
     ec2.create_tags(Resources=id_list, Tags=[{'Key': 'name', 'Value': 'ece1779_a2_user'}])
 
-    # add instance to load balancer
+    global instance_starting
+    instance_starting.extend(id_list)
+
+
+def add_to_load_balancer():
+    global instance_starting
+    # add new instance to load balancer only after they have completed initializing
+    # this way it prevents load balancer from directing traffic to unusable new instance
+    ec2 = boto3.resource('ec2')
+    instances = ec2.instances.filter(
+        Filters=[{'Name': 'tag-value', 'Values': ['ece1779_a2_user']},
+                 {'Name': 'instance-state-name', 'Values': ['running']}])
+    running_ins = []
+    for x in instances:
+        running_ins.append(x.id)
+
     elb = boto3.client('elb')
-    attachinst = elb.register_instances_with_load_balancer(LoadBalancerName='a2loadbalancer',
-                                                           Instances=[{'InstanceId': instances[0].id}])
+    for ins in instance_starting:
+        if ins in running_ins:
+            print('add instance to load balancer:', ins)
+            attachinst = elb.register_instances_with_load_balancer(LoadBalancerName='a2loadbalancer',
+                                                            Instances=[{'InstanceId': ins}])
+            instance_starting.remove(ins)
+            print("pending instance:", instance_starting)
+
 
 
 def destroy_instances(num_destroy):
@@ -199,11 +243,25 @@ def destroy_instances(num_destroy):
         return False
     else:
         elb = boto3.client('elb')
-        random.shuffle(workers)
+        global instance_starting
+        # remove last instance from worker pool to prevent removing running instance and launching new ones
+        # new instances need time to setup and load, and are temporarily not operational after initial launch
+        # they slow down performance of the server so preferably old running instance should be preserved for stability
+        # new instance that is just booting should be the one to be removed
+        # it prevents scenario where the system just keep deleting instances and rebooting new instances
+
         for i in range(num_destroy):
-            elb.deregister_instances_from_load_balancer(LoadBalancerName='a2loadbalancer',
-                                                        Instances=[{'InstanceId': workers[i].id}])
-            workers[i].terminate()
+            if workers[-(i+1)] in instance_starting:
+                instance_starting.remove(workers[-(i+1)])
+
+            else:
+                elb.deregister_instances_from_load_balancer(LoadBalancerName='a2loadbalancer',
+                                                                Instances=[{'InstanceId': workers[-(i+1)].id}])
+                # load balancer using connection drain to handle remaining requests
+                # allow 5 seconds for instance to complete all requests before terminating
+                time.sleep(5)
+                workers[-(i+1)].terminate()
+
         return True
 
 
@@ -213,14 +271,8 @@ def get_cpu_status(id):
     client = boto3.client('cloudwatch')
 
     metric_name = 'CPUUtilization'
-
-    ##    CPUUtilization, NetworkIn, NetworkOut, NetworkPacketsIn,
-    #    NetworkPacketsOut, DiskWriteBytes, DiskReadBytes, DiskWriteOps,
-    #    DiskReadOps, CPUCreditBalance, CPUCreditUsage, StatusCheckFailed,
-    #    StatusCheckFailed_Instance, StatusCheckFailed_System
-
     namespace = 'AWS/EC2'
-    statistic = 'Average'  # could be Sum,Maximum,Minimum,SampleCount,Average
+    statistic = 'Average'
 
     cpu = client.get_metric_statistics(
         Period=1 * 60,
@@ -243,8 +295,12 @@ def get_cpu_status(id):
 
     cpu_stats = sorted(cpu_stats, key=itemgetter(0))
 
-
     return cpu_stats
 
 
-
+# periodically run these tasks
+scheduler = BackgroundScheduler()
+job = scheduler.add_job(autoscale, 'interval', minutes=1, id='autoscale')
+job = scheduler.add_job(add_to_load_balancer, 'interval', seconds=5, max_instances=10, id='register_new_instance')
+scheduler.start()
+atexit.register(lambda: scheduler.shutdown())

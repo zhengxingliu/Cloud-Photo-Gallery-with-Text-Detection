@@ -2,12 +2,11 @@ from flask import render_template, redirect, url_for, request, flash, g
 from manager_app import manager, config
 from manager_app.config import db_config, s3_config
 
-import boto3,random, mysql.connector, statistics
-from datetime import datetime, timedelta
-from operator import itemgetter
+import boto3,random, mysql.connector
 
 from manager_app.ec2 import get_cpu_status
 from manager_app.autoscale import get_cpu_average, create_instances, destroy_instances, get_autoscale_config, autoscale
+from manager_app.http_rate import get_http_rate
 
 
 bucket_name = s3_config["bucket"]
@@ -32,13 +31,24 @@ def teardown_db(exception):
         db.close()
 
 
+@manager.before_first_request
+# create one instance at program start to initialize the server and start auto scaling
+def activate_job():
+    # ec2 = boto3.resource('ec2')
+    # instances = ec2.instances.filter(
+    #     Filters=[{'Name': 'tag-value', 'Values': ['ece1779_a2_user']},
+    #              {'Name': 'instance-state-name', 'Values': ['running', 'pending']}])
+    # size = len(list(instances))
+    # destroy_instances(size)
+    create_instances(1)
+    print("Server Starting: launch first instance")
+
+
 @manager.route('/', methods=['GET'])
 @manager.route('/index', methods=['GET'])
 def index():
     # create connection to ec2
     ec2 = boto3.resource('ec2')
-
-    # instances = ec2.instances.all()
 
     instances = ec2.instances.filter(
         Filters=[{'Name': 'tag-value', 'Values': ['ece1779_a2_user']},
@@ -49,8 +59,6 @@ def index():
     cpu_average = get_cpu_average()
 
     config = get_autoscale_config()
-
-    #autoscale()
 
     return render_template("index.html", title="EC2 Instances", instances=instances, size=size, cpu_average=cpu_average, config=config)
 
@@ -65,6 +73,8 @@ def view_instance(id):
 
     cpu_stats = get_cpu_status(instance.id)
 
+    # http_rate = get_http_rate()
+
 
     return render_template("view_instance.html", title="Instance Info",
                            instance=instance,
@@ -72,6 +82,7 @@ def view_instance(id):
 
 
 @manager.route('/create', methods=['POST'])
+#create new worker instance
 def ec2_create():
     create_instances(1)
     flash('New worker created')
@@ -80,6 +91,7 @@ def ec2_create():
 
 
 @manager.route('/destroy', methods=['POST'])
+#destroy worker instance
 def ec2_destroy():
     if destroy_instances(1):
         flash('Worker destroyed')
@@ -108,12 +120,16 @@ def delete_data():
     cnx = get_db()
     cursor = cnx.cursor()
 
-    # delete data from sql database
-    query = ''' DELETE FROM transformation'''
+    # reset sql database
+    query = '''SET FOREIGN_KEY_CHECKS = 0'''
     cursor.execute(query)
-    query = ''' DELETE FROM photo'''
+    query = '''TRUNCATE table transformation'''
     cursor.execute(query)
-    query = ''' DELETE FROM user'''
+    query = '''TRUNCATE table photo'''
+    cursor.execute(query)
+    query = '''TRUNCATE table user'''
+    cursor.execute(query)
+    query = '''SET FOREIGN_KEY_CHECKS = 1'''
     cursor.execute(query)
     cnx.commit()
 

@@ -2,24 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b08dd5f8-ed54-4212-b019-ad419dc8eaa2" name="Default Changelist" comment="message">
-      <change afterPath="$PROJECT_DIR$/manager_app/autoscale.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager_app/ec2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/manager_app/templates/config.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manager_app/http_rate.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/a2_database.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/a2_database.mwb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manager_app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manager_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager_app/autoscale.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/autoscale.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manager_app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager_app/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager_app/templates/config.html" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/templates/config.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/manager_app/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run_user.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/activate" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/activate" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/activate.csh" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/activate.csh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/activate.fish" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/activate.fish" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/easy_install" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/easy_install" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/pip3" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/pip3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/python" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/python" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/bin/python3" beforeDir="false" afterPath="$PROJECT_DIR$/venv/bin/python3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/pyvenv.cfg" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pyvenv.cfg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run_manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/run_manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start_worker.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start_worker.sh" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -65,6 +59,27 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.run_manager">
+    <configuration name="http_rate" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="ece1779_a1" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/manager_app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/manager_app/http_rate.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="photo" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="ece1779_a1" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -173,6 +188,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.run_manager" />
+        <item itemvalue="Python.http_rate" />
         <item itemvalue="Python.photo" />
         <item itemvalue="Python.user" />
         <item itemvalue="Python.test" />

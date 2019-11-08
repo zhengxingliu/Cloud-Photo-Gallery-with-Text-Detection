@@ -11,6 +11,10 @@
 
 
     <h3>New Setting</h3>
+    <p><small class="text-muted">Growing threshold has to be greater than shrinking threshold,
+        both threshold need to be greater than 0.
+        Expand/shrink ratio have to be greater than 1.</small></p>
+
     <form action="{{url_for('update_config')}}" method='post'>
     <div class="form-group">
     <label>Growing Threshold:</label>

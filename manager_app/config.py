@@ -11,15 +11,14 @@ instance_type = 't2.small'
 security_group = ['ece1779']
 key_name = 'ece_1779'
 
+ARN = 'a2loadbalancer-1794919167.us-east-1.elb.amazonaws.com'
+
 
 userdata = """#!/bin/bash
-echo CP1
 cd /home/ubuntu/Desktop/ece1779_a2
-echo CP2
 ./start.sh &
-echo CP3
-touch /tmp/cp3-1
  """
+
 
 
 # #!/bin/bash -ex
@@ -29,17 +28,15 @@ touch /tmp/cp3-1
 # /home/ubuntu/Desktop/cloud_env/env/bin/gunicorn --bind 0.0.0.0:5000 --workers=8 app:webapp --access-logfile -
 # date '+%Y-%m-%d %H:%M:%S'
 
-# userdata = """#cloud-config
-#
-# runcmd:
-# - [ exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1 ]
-# - echo BEGIN
-# - [ cd /home/ubuntu/Desktop/ece1779_a2 ]
-# - source venv/bin/activate
-# - [ /home/ubuntu/Desktop/ece1779/aws/venv/bin/gunicorn --bind 0.0.0.0:5000 --workers=1 app:webapp ]
-# - echo END
-#
-# """
-#
 
+
+
+# userdata = """#!/bin/bash
+# echo CP1
+# cd /home/ubuntu/Desktop/ece1779_a2
+# echo CP2
+# ./start.sh &
+# echo CP3
+# touch /tmp/cp3-1
+#  """
 
