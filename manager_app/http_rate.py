@@ -1,32 +1,30 @@
-import boto3,random, mysql.connector
+import boto3
+import urllib.request
 from datetime import datetime, timedelta
 from operator import itemgetter
 
-
-def get_http_rate():
+def get_http_rate(id):
 
     client = boto3.client('cloudwatch')
 
-    metric_name = 'AllRequests'
+    instanceID = str(id)
+    metric_name = 'HttpRequestRate'
 
 
-    namespace = 'AWS/S3'
-    statistic = 'Sum'  # could be Sum,Maximum,Minimum,SampleCount,Average
-
-    http = client.get_metric_statistics(
+    rate = client.get_metric_statistics(
         Period=1 * 60,
         StartTime=datetime.utcnow() - timedelta(seconds=30 * 60),
         EndTime=datetime.utcnow() - timedelta(seconds=0 * 60),
         MetricName=metric_name,
-        Namespace=namespace,
-        Unit='Counts',
-        Statistics=[statistic],
-        Dimensions=[{'Name': 'Http Request', 'Value': 'Counts'}]
+        Namespace='Custom',
+        Unit='Count',
+        Statistics=['Sum'],
+        Dimensions=[{'Name': 'InstanceID','Value': instanceID}]
     )
 
     http_rate = []
 
-    for point in http['Datapoints']:
+    for point in rate['Datapoints']:
         hour = point['Timestamp'].hour
         minute = point['Timestamp'].minute
         time = hour + minute / 60
@@ -36,4 +34,5 @@ def get_http_rate():
 
 
     return http_rate
+
 

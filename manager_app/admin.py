@@ -6,8 +6,8 @@ import boto3,random, mysql.connector
 
 from manager_app.ec2 import get_cpu_status
 from manager_app.autoscale import get_cpu_average, create_instances, destroy_instances, get_autoscale_config, autoscale
-from manager_app.http_rate import get_http_rate
 
+from manager_app.http_rate import get_http_rate
 
 bucket_name = s3_config["bucket"]
 
@@ -73,12 +73,13 @@ def view_instance(id):
 
     cpu_stats = get_cpu_status(instance.id)
 
-    # http_rate = get_http_rate()
+    http_rate = get_http_rate(123)
 
+    print('http rate', http_rate)
 
     return render_template("view_instance.html", title="Instance Info",
                            instance=instance,
-                           cpu_stats=cpu_stats)
+                           cpu_stats=cpu_stats, http_rate=http_rate)
 
 
 @manager.route('/create', methods=['POST'])
@@ -86,6 +87,7 @@ def view_instance(id):
 def ec2_create():
     create_instances(1)
     flash('New worker created')
+    print('manually grow worker pool')
     return redirect(url_for('index'))
 
 
@@ -95,6 +97,7 @@ def ec2_create():
 def ec2_destroy():
     if destroy_instances(1):
         flash('Worker destroyed')
+        print('manually shrink worker pool')
         return redirect(url_for('index'))
     else:
         flash ('No worker can be further destroyed')

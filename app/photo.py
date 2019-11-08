@@ -35,6 +35,7 @@ def teardown_db(exception):
         db.close()
 
 
+
 @webapp.route('/',methods=['GET'])
 # redirect to login, or thumbnail page if already logged in
 def main():

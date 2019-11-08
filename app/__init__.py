@@ -5,6 +5,7 @@ webapp = Flask(__name__)
 
 from app import user
 from app import photo
+from app import http_rate
 
 # set session timeout, user login expires after 1 day
 webapp.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=1)

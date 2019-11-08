@@ -188,6 +188,10 @@ def autoscale():
             destroy_instances(num)
             print('average below threshold, destroying ' + str(num) + ' workers, '+ str(size-num) + " workers available")
             return True
+
+        else:
+            print('cpu within threshold, no scaling')
+            return False
     return False
 
 
@@ -206,6 +210,7 @@ def create_instances(num_create):
     for ins in instances:
         id_list.append(ins.id)
     ec2.create_tags(Resources=id_list, Tags=[{'Key': 'name', 'Value': 'ece1779_a2_user'}])
+
 
     global instance_starting
     instance_starting.extend(id_list)

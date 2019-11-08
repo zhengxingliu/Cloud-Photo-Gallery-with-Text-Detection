@@ -34,6 +34,11 @@
 
          <div class = "col-sm-4">
              <h4>Rate of HTTP Requests</h4>
+             <table>
+                 <tr><td></td>
+                     <td><div id="http_plot" style="width:300px;height:150px"></div></td>
+                 <tr><td></td><td align="right">Hour: UTC</td></tr>
+             </table>
 
      </div>
 
@@ -46,6 +51,17 @@
             }
         };
         $.plot($("#cpu_plot"), [ {{ cpu_stats }} ] , options);
+     </script>
+
+
+     <script>
+        var options = {
+            series: {
+               lines: { show: true },
+               points: { show: true }
+            }
+        };
+        $.plot($("#http_plot"), [ {{ http_rate }} ] , options);
      </script>
 
 {% endblock %}
