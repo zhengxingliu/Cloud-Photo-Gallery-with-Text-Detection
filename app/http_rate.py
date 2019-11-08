@@ -15,8 +15,8 @@ def updata_http_rate():
 
 def put_http_rate():
     global httpRate
-    #instanceID = get_instance_id()
-    instanceID = str(123)
+    instanceID = get_instance_id()
+    #instanceID = str('test')
 
     client = boto3.client('cloudwatch')
     response = client.put_metric_data(
@@ -45,8 +45,6 @@ scheduler = BackgroundScheduler()
 job = scheduler.add_job(put_http_rate, 'interval', seconds=30, id='http_metric')
 scheduler.start()
 atexit.register(lambda: scheduler.shutdown())
-
-
 
 
 def get_instance_id():

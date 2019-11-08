@@ -72,10 +72,7 @@ def view_instance(id):
     instance = ec2.Instance(id)
 
     cpu_stats = get_cpu_status(instance.id)
-
-    http_rate = get_http_rate(123)
-
-    print('http rate', http_rate)
+    http_rate = get_http_rate(instance.id)
 
     return render_template("view_instance.html", title="Instance Info",
                            instance=instance,

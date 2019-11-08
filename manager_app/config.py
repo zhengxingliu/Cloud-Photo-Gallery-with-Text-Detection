@@ -6,7 +6,7 @@ db_config = {'user': 'admin',
 
 s3_config = {"bucket": "1779a2"}
 
-ami_id = 'ami-0bf7c16df888353f8'
+ami_id = 'ami-028e4edc85fcac1f8'
 instance_type = 't2.small'
 security_group = ['ece1779']
 key_name = 'ece_1779'
