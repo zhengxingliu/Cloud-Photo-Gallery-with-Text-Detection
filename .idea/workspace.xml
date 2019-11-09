@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b08dd5f8-ed54-4212-b019-ad419dc8eaa2" name="Default Changelist" comment="message">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/http_rate.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/http_rate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/photo.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/photo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/user/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/user/new.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/user/new.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager_app/autoscale.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/autoscale.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/manager_app/http_rate.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/http_rate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start_manager.sh" beforeDir="false" afterPath="$PROJECT_DIR$/start_manager.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/manager_app/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/manager_app/config.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

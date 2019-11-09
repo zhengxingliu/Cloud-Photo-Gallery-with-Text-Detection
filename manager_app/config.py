@@ -14,6 +14,7 @@ key_name = 'ece_1779'
 ARN = 'a2loadbalancer-1794919167.us-east-1.elb.amazonaws.com'
 
 
+# use user data to pass on bash script to start worker automatically
 userdata = """#!/bin/bash
 cd /home/ubuntu/Desktop/ece1779_a2
 ./start.sh &
