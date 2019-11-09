@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+   <h2>Current workers: {{size}}</h2>
+    <p>Load Balancer DNS: http://a2loadbalancer-1794919167.us-east-1.elb.amazonaws.com</p>
+    <br>
+   <div class="row">
+
+       <div class = "col-xs-10 col-md-3">
+            <form action="{{url_for('get_config')}}" method='post'>
+                <input class="btn btn-outline-primary" type='submit' value='Configure AutoScaling' />
+            </form>
+       </div>
+
+        <div class = "col-xs-10 col-md-2">
+            <form action="{{url_for('ec2_create')}}" method='post'>
+                <input class="btn btn-outline-primary" type='submit' value='Grow Worker Pool' />
+            </form>
+        </div>
+
+        <div class = "col-xs-10 col-md-2">
+            <form action="{{url_for('ec2_destroy')}}" method='post'>
+                <input class="btn btn-outline-primary" type='submit' value='Shrink Worker Pool' />
+            </form>
+        </div>
+
+         <div class = "col-md-5">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes >
+            {% for message in messages %}
+                <li "><p class="text-danger">{{ message }}</p></li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+         </div>
+   </div>
+
+    <br><p>CPU ulitization average: {{cpu_average}}%</p>
+    <p>AutoScale Configuration:
+        Growing Threshold: {{config["grow_thres"]}},
+        Shrinking Threshold: {{config["shrink_thres"]}},
+        Expand Ratio: {{config["expand_ratio"]}},
+        Shrink Ratio: {{config["shrink_ratio"]}}
+    </p>
+
+    <table class="table">
+    <thead class="thead-light">
+       <th>ID</th>
+       <th>Type</th>
+       <th>Availability Zone</th>
+       <th>Status</th>
+       <th> </th>
+    </>
+    {% for instance in instances %}
+        <tr>
+            <td>{{ instance.id }}</td>
+            <td>{{ instance.instance_type }}</td>
+            <td>{{ instance.placement['AvailabilityZone']}}</td>
+            <td>{{ instance.state['Name'] }}</td>
+
+        <td>
+                <form action="{{url_for('view_instance',id=instance.id)}}" method='get'>
+                    <input class="btn btn-outline-primary" type='submit' value='Details' />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+
+
+            <form action="{{url_for('delete_data')}}" method='post'>
+                <input class="btn btn-outline-primary" type='submit' value='Delete All Data'
+                       onclick="return confirm('Are you sure you want to delete all data?')"/>
+            </form>
+            <br>
+             <form action="{{url_for('terminate_all')}}" method='post'>
+                <input class="btn btn-outline-primary" type='submit' value='Terminate All Instances'
+                       onclick="return confirm('Are you sure you want to terminate all instances?')"/>
+            </form>
+            <br>
+
+    <p><small class="text-muted">If no worker is running, grow worker pool by 1 to start autoscaling.
+        Allow some time for new instance to launch and pass load balancer's health test.
+        CPU data will start updating after instance is deployed for more than 1 minute.</small> </p>
+
+{% endblock %}

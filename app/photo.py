@@ -5,16 +5,16 @@ from app.config import db_config, s3_config
 from wand.image import Image
 
 import mysql.connector
-import os, hashlib, tempfile
+import os, hashlib
 import boto3
 
 from app.text_detection import text_detection
 
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-#bucket_name = "1779a2test"
 bucket_name = s3_config["bucket"]
 
+# uses amazon RDS mysql database
 def connect_to_database():
     return mysql.connector.connect(user=db_config['user'],
                                    password=db_config['password'],
@@ -34,6 +34,7 @@ def teardown_db(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
 
 
 @webapp.route('/',methods=['GET'])
@@ -113,11 +114,9 @@ def image_save(id):
         session['error'] = 'File type not supported'
         return redirect(url_for('image_upload',id=id))
 
-
+    # process file name and type,  add user id prefix before filename
     file_name, file_type = (new_file.filename).rsplit('.',1)
     fname = str(id) + "_" + file_name + "." + file_type
-
-
 
 
     # check if file existed with duplicated name
@@ -211,6 +210,7 @@ def image_view(id,photo_id):
     s3 = boto3.client('s3')
     images = []
     for key in cursor:
+        # retrieve image from s3 as url
         url = s3.generate_presigned_url('get_object', Params={'Bucket': bucket_name, 'Key': key[0]}, ExpiresIn=86400)
         images.append(url)
 
