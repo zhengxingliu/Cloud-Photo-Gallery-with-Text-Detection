@@ -1,8 +1,8 @@
 import boto3
-import urllib.request
 from datetime import datetime, timedelta
 from operator import itemgetter
 
+# retrieve custom http request rate metric from cloudwatch
 def get_http_rate(id):
 
     client = boto3.client('cloudwatch')

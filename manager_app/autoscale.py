@@ -16,6 +16,7 @@ autoscale_config = {"grow_thres": 70, 'shrink_thres': 30, "expand_ratio": 2, "sh
 # list of new pending instances that need to be added to load balancer
 instance_starting = []
 
+
 def connect_to_database():
     return mysql.connector.connect(user=db_config['user'],
                                    password=db_config['password'],
@@ -44,6 +45,7 @@ def get_config():
     return render_template("config.html", title="Autoscale Config", config=autoscale_config, error=error)
 
 
+# retrieve autoscale configuration from database
 def get_autoscale_config():
     cnx = get_db()
     cursor = cnx.cursor()
@@ -62,7 +64,12 @@ def get_autoscale_config():
 # save new autoscale configuration
 def update_config():
     autoscale_config = get_autoscale_config()
+
     # validate new config values from form
+    # grow thres has to be larger than shrink thres, both thres have to be greater than 0
+    # expand/shrink ratio has to be greater than 1
+    # accepts single change in config data from form
+
     error = ""
     grow_thres=request.form.get('grow_thres', "")
     shrink_thres = request.form.get('shrink_thres', "")
@@ -120,14 +127,12 @@ def update_config():
         return render_template("config.html", title="Autoscale Config", config=autoscale_config, error=error)
 
 
-
-
+# calculate cpu utilization average
 def get_cpu_average():
     ec2 = boto3.resource('ec2')
     instances = ec2.instances.filter(
         Filters=[{'Name': 'tag-value', 'Values': ['ece1779_a2_user']},
                  {'Name': 'instance-state-name', 'Values': ['running']}])
-
 
     cpu_list = []
     if len(list(instances)) > 0:
@@ -151,7 +156,7 @@ def get_cpu_average():
         print('cpu average: no data')
         return 0
 
-# auto scale worker pool based on cpu utilization
+# auto scale worker pool based on average cpu utilization
 def autoscale():
     print("autoscale:")
     average = get_cpu_average()
@@ -195,7 +200,7 @@ def autoscale():
     return False
 
 
-
+# create number of new instances as workers
 def create_instances(num_create):
     ec2 = boto3.resource('ec2')
     instances = ec2.create_instances(ImageId=config.ami_id,
@@ -211,11 +216,12 @@ def create_instances(num_create):
         id_list.append(ins.id)
     ec2.create_tags(Resources=id_list, Tags=[{'Key': 'name', 'Value': 'ece1779_a2_user'}])
 
-
+    # add newly created instance into waiting list until it finishes initiating
     global instance_starting
     instance_starting.extend(id_list)
 
 
+# add worker instance to load balancer
 def add_to_load_balancer():
     global instance_starting
     # add new instance to load balancer only after they have completed initializing
@@ -228,6 +234,8 @@ def add_to_load_balancer():
     for x in instances:
         running_ins.append(x.id)
 
+    # check if a running instance is on the list of recently started instance
+    # meaning it's a new instance that has finished initializing and now ready to employ on load balancer
     elb = boto3.client('elb')
     for ins in instance_starting:
         if ins in running_ins:
@@ -238,7 +246,7 @@ def add_to_load_balancer():
             print("pending instance:", instance_starting)
 
 
-
+# terminate number of worker instances
 def destroy_instances(num_destroy):
     ec2 = boto3.resource('ec2')
     workers = list(ec2.instances.filter(
@@ -270,7 +278,7 @@ def destroy_instances(num_destroy):
         return True
 
 
-
+# read cpu utilization metrics from cloudwatch
 def get_cpu_status(id):
 
     client = boto3.client('cloudwatch')
@@ -279,6 +287,7 @@ def get_cpu_status(id):
     namespace = 'AWS/EC2'
     statistic = 'Average'
 
+    # read data for past 30 minutes with 1 minute resolution
     cpu = client.get_metric_statistics(
         Period=1 * 60,
         StartTime=datetime.utcnow() - timedelta(seconds=30 * 60),

@@ -1,13 +1,10 @@
 from flask import render_template, redirect, url_for, request, flash, g
-from manager_app import manager, config
+from manager_app import manager
 from manager_app.config import db_config, s3_config
-
-import boto3,random, mysql.connector
-
 from manager_app.ec2 import get_cpu_status
-from manager_app.autoscale import get_cpu_average, create_instances, destroy_instances, get_autoscale_config, autoscale
-
+from manager_app.autoscale import get_cpu_average, create_instances, destroy_instances, get_autoscale_config
 from manager_app.http_rate import get_http_rate
+import boto3, mysql.connector
 
 bucket_name = s3_config["bucket"]
 
