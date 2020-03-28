@@ -1,4 +1,4 @@
-#Cloud Photo Gallery with Text Detection
+# Cloud Photo Gallery with Text Detection
 
 * Deployed on AWS using EC2, S3 and RDS
 * Web application using Python, Flask and MySQL
